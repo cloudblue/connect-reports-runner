@@ -1,0 +1,71 @@
+{
+  "id": "REC-000-000-0000-000000",
+  "template": {
+    "id": "RDC-000-000-0000",
+    "name": "pending fulfillment requests",
+    "description": "Some useful description",
+    "type": "custom",
+    "specs_version": "2",
+    "entrypoint": "super_report.entrypoint_v2.generate",
+    "revision": 1,
+    "repository": {
+      "id": "RKC-000-000",
+      "git": {
+        "url": "https://user:token@github.com/account/repo.git",
+        "tag": "v.1.0",
+        "commit": "84b120eb4de6941e9537fbc670d08fbab04b5a11"
+      }
+    }
+  },
+  "renderer": "default_xlsx_renderer",
+  "parameters": [
+    {
+      "id": "updated",
+      "type": "date_range",
+      "value": {
+        "after": "2020-10-14T10:21:22+00:00",
+        "before": "2020-10-14T10:21:22+00:00"
+      }
+    },
+    {
+      "id": "marketplace",
+      "type": "marketplace",
+      "value": {
+        "all": false,
+        "choices": [
+          "MP-123",
+          "MP-456"
+        ]
+      }
+    }
+  ],
+  "stats": {
+    "created": {
+      "at": "2020-10-14T10:21:22+00:00",
+      "by": {
+        "id": "UR-232-575-411",
+        "name": "Test user"
+      }
+    },
+    "started": {
+      "at": "2020-10-14T10:21:22+00:00"
+    },
+    "terminated": {
+      "at": "2020-10-14T10:21:22+00:00"
+    }
+  },
+  "progress": {
+    "value": 0,
+    "max": 0
+  },
+  "timeout": false,
+  "status": "pending",
+  "timing": {
+    "run": 0,
+    "wait": 0
+  },
+  "owner": {
+    "id": "VA-000-000",
+    "name": "Dropbox Inc"
+  }
+}
