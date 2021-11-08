@@ -134,6 +134,89 @@ def test_execute_report_v2(
     executor.executor.start()
 
 
+def test_execute_report_error_on_report_code_controlled(
+    mocker,
+    mocked_env,
+    mocked_responses,
+    mocked_report_response_v2_fake_fs,
+    report_v2_json,
+    param_json,
+    mocked_dir_v2,
+):
+    root_path = mocked_dir_v2
+
+    xlsx_renderer = RendererDefinition(
+        root_path=root_path,
+        id='xlsx_renderer',
+        type='xlsx',
+        description='Excel renderer.',
+        default=True,
+        template='super_report/template.xlsx',
+        args={
+            'start_row': 1,
+            'start_col': 1,
+        },
+    )
+    json_renderer = RendererDefinition(
+        root_path=root_path,
+        id='json_renderer',
+        type='json',
+        description='Json renderer.',
+        default=False,
+    )
+    report_json = report_v2_json(
+        name='pending fulfillment requests',
+        readme_file='Readme.md',
+        entrypoint='super_report.entrypoint_v2.generate',
+        parameters=[param_json()],
+        renderers=[xlsx_renderer, json_renderer],
+    )
+
+    report_definition = ReportDefinition(
+        root_path=root_path,
+        **report_json,
+    )
+    mocker.patch(
+        'executor.executor.get_report_definition',
+        return_value=report_definition,
+    )
+
+    mocked_report_response_v2_fake_fs['renderer'] = 'xlsx_renderer'
+
+    mocked_responses.add(
+        method='GET',
+        url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000',
+        json=mocked_report_response_v2_fake_fs,
+    )
+    mocker.patch(
+        'super_report.entrypoint_v2.generate',
+        side_effect=RuntimeError("Custom error"),
+    )
+    upload = mocker.patch(
+        'executor.exception_handler.fail_report',
+    )
+    client = ConnectClient(
+        use_specs=False,
+        api_key=os.getenv('CLIENT_TOKEN'),
+        endpoint=os.getenv('API_ENDPOINT'),
+    )
+    mocker.patch(
+        'executor.executor.ConnectClient',
+        return_value=client,
+    )
+
+    with pytest.raises(RuntimeError) as e:
+        executor.executor.start()
+
+    assert isinstance(e.value, RuntimeError)
+    upload.assert_called_with(
+        client,
+        'REC-000-000-0000-000000',
+        'Report execution failed with error: Custom error',
+        False,
+    )
+
+
 def test_execute_report_upload_error(
     mocker,
     mocked_env,
@@ -337,86 +420,3 @@ def test_execute_report_error_on_report_code(
         executor.executor.start()
 
     assert isinstance(e.value, ValueError)
-
-
-def test_execute_report_error_on_report_code_controlled(
-    mocker,
-    mocked_env,
-    mocked_responses,
-    mocked_report_response_v2_fake_fs,
-    report_v2_json,
-    param_json,
-    mocked_dir_v2,
-):
-    root_path = mocked_dir_v2
-
-    xlsx_renderer = RendererDefinition(
-        root_path=root_path,
-        id='xlsx_renderer',
-        type='xlsx',
-        description='Excel renderer.',
-        default=True,
-        template='super_report/template.xlsx',
-        args={
-            'start_row': 1,
-            'start_col': 1,
-        },
-    )
-    json_renderer = RendererDefinition(
-        root_path=root_path,
-        id='json_renderer',
-        type='json',
-        description='Json renderer.',
-        default=False,
-    )
-    report_json = report_v2_json(
-        name='pending fulfillment requests',
-        readme_file='Readme.md',
-        entrypoint='super_report.entrypoint_v2.generate',
-        parameters=[param_json()],
-        renderers=[xlsx_renderer, json_renderer],
-    )
-
-    report_definition = ReportDefinition(
-        root_path=root_path,
-        **report_json,
-    )
-    mocker.patch(
-        'executor.executor.get_report_definition',
-        return_value=report_definition,
-    )
-
-    mocked_report_response_v2_fake_fs['renderer'] = 'xlsx_renderer'
-
-    mocked_responses.add(
-        method='GET',
-        url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000',
-        json=mocked_report_response_v2_fake_fs,
-    )
-    mocker.patch(
-        'super_report.entrypoint_v2.generate',
-        side_effect=RuntimeError("Custom error"),
-    )
-    upload = mocker.patch(
-        'executor.exception_handler.fail_report',
-    )
-    client = ConnectClient(
-        use_specs=False,
-        api_key=os.getenv('CLIENT_TOKEN'),
-        endpoint=os.getenv('API_ENDPOINT'),
-    )
-    mocker.patch(
-        'executor.executor.ConnectClient',
-        return_value=client,
-    )
-
-    with pytest.raises(RuntimeError) as e:
-        executor.executor.start()
-
-    assert isinstance(e.value, RuntimeError)
-    upload.assert_called_with(
-        client,
-        'REC-000-000-0000-000000',
-        'Report execution failed with error: Custom error',
-        False,
-    )

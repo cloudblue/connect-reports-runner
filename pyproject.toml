@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "reports-runner"
+name = "connect-reports-runner"
 version = "24.0.0"
 description = "Connect Reports Runner"
 authors = ["CloudBlue"]
@@ -16,7 +16,9 @@ classifiers = [
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Topic :: Utilities",
+    "Topic :: Software Development :: Libraries",
 ]
 keywords = [
     "utility",

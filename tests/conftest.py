@@ -131,6 +131,7 @@ def mocked_dir_v2(fs):
     )
     fs.add_real_directory(real_dir)
     os.environ['REPORTS_MOUNTPOINT'] = real_dir
+    return real_dir
 
 
 @pytest.fixture(scope='function')
