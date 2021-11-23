@@ -19,6 +19,7 @@ from executor.utils import (
     get_report_definition,
     get_report_entrypoint,
     get_report_env,
+    get_user_agent,
     upload_file,
 )
 
@@ -36,6 +37,7 @@ def start():
         api_key=report_env["client_token"],
         max_retries=3,
         default_limit=500,
+        default_headers=get_user_agent(),
     )
 
     try:
@@ -79,6 +81,7 @@ def execute_report(control_client, report_definition, connect_report):  # noqa: 
         api_key=report_env["client_token"],
         max_retries=3,
         default_limit=500,
+        default_headers=get_user_agent(),
     )
     connect_parameters = connect_report.get('parameters', [])
     parameters = normalize_parameters(connect_parameters)

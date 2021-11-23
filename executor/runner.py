@@ -5,7 +5,7 @@ import time
 from connect.client import ClientError, ConnectClient
 
 from executor.exception_handler import fail_report
-from executor.utils import get_report_env
+from executor.utils import get_report_env, get_user_agent
 
 
 logger = logging.getLogger('runner')
@@ -46,6 +46,7 @@ def run_executor():
             use_specs=False,
             api_key=report_env['client_token'],
             max_retries=3,
+            default_headers=get_user_agent(),
         )
         try:
             fail_report(
