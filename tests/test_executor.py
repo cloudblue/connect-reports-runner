@@ -82,7 +82,6 @@ def test_execute_report_v2(
     mocked_report_response_v2_fake_fs,
 ):
     root_path = os.getenv('REPORTS_MOUNTPOINT')
-
     xlsx_renderer = RendererDefinition(
         root_path=root_path,
         id='xlsx_renderer',
@@ -144,7 +143,7 @@ def test_execute_report_error_on_report_code_controlled(
     mocked_dir_v2,
 ):
     root_path = mocked_dir_v2
-
+    sys.path.append(root_path)
     xlsx_renderer = RendererDefinition(
         root_path=root_path,
         id='xlsx_renderer',
@@ -188,6 +187,7 @@ def test_execute_report_error_on_report_code_controlled(
         url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000',
         json=mocked_report_response_v2_fake_fs,
     )
+
     mocker.patch(
         'super_report.entrypoint_v2.generate',
         side_effect=RuntimeError("Custom error"),

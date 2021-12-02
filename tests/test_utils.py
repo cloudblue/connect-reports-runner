@@ -4,6 +4,9 @@ import tempfile
 
 import pytest
 from connect.client import ConnectClient
+from pkg_resources import (
+    DistributionNotFound,
+)
 
 from executor.exceptions import RunnerException
 from executor.utils import (
@@ -13,6 +16,8 @@ from executor.utils import (
     get_report_entrypoint,
     get_report_env,
     get_report_id,
+    get_user_agent,
+    get_version,
     load_descriptor_file,
     upload_file,
 )
@@ -174,3 +179,32 @@ def test_get_report_entrypoint():
 
     assert type(result).__name__ == 'function'
     assert result('a', 'b') == 'a/b'
+
+
+def test_get_version(mocker):
+    mocked = mocker.MagicMock()
+    mocked.version = '22.0'
+    mocker.patch(
+        'executor.utils.get_distribution',
+        return_value=mocked,
+    )
+    assert get_version() == '22.0'
+
+
+def test_get_version_exception(mocker):
+    mocker.patch(
+        'executor.utils.get_distribution',
+        side_effect=DistributionNotFound(),
+    )
+    assert get_version() == '0.0.0'
+
+
+def test_get_user_agent(mocker):
+    mocker.patch('executor.utils.platform.python_implementation', return_value='1')
+    mocker.patch('executor.utils.platform.python_version', return_value='3.15')
+    mocker.patch('executor.utils.platform.system', return_value='Linux')
+    mocker.patch('executor.utils.platform.release', return_value='1.0')
+    mocker.patch('executor.utils.get_version', return_value='22.0')
+    expected_ua = 'connect-reports-runner/22.0 1/3.15 Linux/1.0 REC-000-000-0000-000000'
+    os.environ['REPORT_ID'] = 'REC-000-000-0000-000000'
+    assert get_user_agent() == {'User-Agent': expected_ua}

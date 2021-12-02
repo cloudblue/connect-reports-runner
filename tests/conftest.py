@@ -1,6 +1,7 @@
 import json
 import os
 import sys
+from unittest.mock import MagicMock, patch
 
 import pytest
 import responses
@@ -162,3 +163,17 @@ def report_v2_json(param_json):
         return data
 
     return _report_data
+
+
+@pytest.fixture(scope='session', autouse=True)
+def patch_get_distribution():
+    mocker_distro = MagicMock(version='1.0.0')
+    with patch('pkg_resources.get_distribution', return_value=mocker_distro):
+        yield
+
+
+@pytest.fixture(scope='session', autouse=True)
+def patch_platform():
+    with patch('platform.system', return_value='commodore'):
+        with patch('platform.release', return_value='64'):
+            yield

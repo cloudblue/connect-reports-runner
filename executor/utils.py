@@ -1,5 +1,6 @@
 import json
 import os
+import platform
 from importlib import import_module
 
 from connect.reports.parser import parse
@@ -7,6 +8,7 @@ from connect.reports.validator import (
     validate,
     validate_with_schema,
 )
+from pkg_resources import DistributionNotFound, get_distribution
 
 from executor.exceptions import RunnerException
 
@@ -86,6 +88,27 @@ def get_report_definition(entrypoint):
     return report
 
 
+def get_version():
+    try:
+        return get_distribution('connect-reports-runner').version
+    except DistributionNotFound:
+        return '0.0.0'
+
+
+def get_user_agent():
+    version = get_version()
+    pimpl = platform.python_implementation()
+    pver = platform.python_version()
+    sysname = platform.system()
+    sysver = platform.release()
+    return {
+        'User-Agent': (
+            f'connect-reports-runner/{version} {pimpl}/{pver} {sysname}/{sysver}'
+            f' {os.getenv("REPORT_ID", None)}'
+        ),
+    }
+
+
 def upload_file(client, report_name, report_id):
     report_filename = os.path.basename(report_name)
     return client.ns('reporting').reports[report_id].action('upload').post(
@@ -93,5 +116,6 @@ def upload_file(client, report_name, report_id):
         headers={
             'Content-Type': 'application/octet-stream',
             'Content-Disposition': f'attachment; filename="{report_filename}"',
+            **get_user_agent(),
         },
     )
