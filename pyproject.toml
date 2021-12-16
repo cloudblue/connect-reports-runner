@@ -2,15 +2,15 @@
 name = "connect-reports-runner"
 version = "24.0.0"
 description = "Connect Reports Runner"
-authors = ["CloudBlue"]
+authors = ["CloudBlue LLC"]
 license = "Apache-2.0"
 packages = [
     { include = "executor" }
 ]
 readme = "./README.md"
-documentation = "https://confluence.int.zone/display/CONNECT/Reports+Management"
+documentation = "https://github.com/cloudblue/connect-reports-runner"
 homepage = "https://connect.cloudblue.com"
-repository = "https://git.int.zone/projects/SWFT/repos/reports-runner"
+repository = "https://github.com/cloudblue/connect-reports-runner"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
@@ -31,12 +31,12 @@ keywords = [
 cextrun = 'executor.runner:run_executor'
 
 [tool.poetry.dependencies]
+python = "^3.8"
 chardet = "3.*"
 connect-openapi-client = ">=24.0"
-connect-reports-core = "23.0.*"
+connect-reports-core = "24.*"
 lxml = "4.*"
 openpyxl = "3.*"
-python = "3.8.*"
 requests = "2.*"
 
 [tool.poetry.dev-dependencies]
