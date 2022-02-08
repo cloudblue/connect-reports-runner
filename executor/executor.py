@@ -35,8 +35,8 @@ def start():
         endpoint=report_env['api_endpoint'],
         use_specs=False,
         api_key=report_env["client_token"],
-        max_retries=3,
-        default_limit=500,
+        max_retries=5,
+        default_limit=100,
         default_headers=get_user_agent(),
     )
 
@@ -79,8 +79,8 @@ def execute_report(control_client, report_definition, connect_report):  # noqa: 
         endpoint=report_env["api_endpoint"],
         use_specs=False,
         api_key=report_env["client_token"],
-        max_retries=3,
-        default_limit=500,
+        max_retries=5,
+        default_limit=100,
         default_headers=get_user_agent(),
     )
     connect_parameters = connect_report.get('parameters', [])
