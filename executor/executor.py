@@ -38,6 +38,7 @@ def start():
         max_retries=5,
         default_limit=100,
         default_headers=get_user_agent(),
+        timeout=(360, 360),
     )
 
     try:
@@ -82,6 +83,7 @@ def execute_report(control_client, report_definition, connect_report):  # noqa: 
         max_retries=5,
         default_limit=100,
         default_headers=get_user_agent(),
+        timeout=(360, 360),
     )
     connect_parameters = connect_report.get('parameters', [])
     parameters = normalize_parameters(connect_parameters)
