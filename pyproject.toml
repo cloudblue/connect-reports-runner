@@ -34,7 +34,7 @@ cextrun = 'executor.runner:run_executor'
 [tool.poetry.dependencies]
 python = "^3.8"
 chardet = "3.*"
-connect-openapi-client = ">=24.0"
+connect-openapi-client = ">=24.4"
 connect-reports-core = "24.*"
 lxml = "4.*"
 openpyxl = "3.*"
