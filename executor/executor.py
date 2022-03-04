@@ -36,7 +36,7 @@ def start():
         use_specs=False,
         api_key=report_env["client_token"],
         max_retries=5,
-        default_limit=100,
+        default_limit=500,
         default_headers=get_user_agent(),
         timeout=(360, 360),
     )
@@ -81,7 +81,7 @@ def execute_report(control_client, report_definition, connect_report):  # noqa: 
         use_specs=False,
         api_key=report_env["client_token"],
         max_retries=5,
-        default_limit=100,
+        default_limit=500,
         default_headers=get_user_agent(),
         timeout=(360, 360),
     )
