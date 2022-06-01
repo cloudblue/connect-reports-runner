@@ -39,6 +39,8 @@ def run_executor():
             logger.info('Executor process has exited with 0.')
             return
 
+        logger.error(f'Last output stdout {proc.stdout}')
+        logger.error(f'Last output stderr {proc.stderr}')
         logger.error(f'Executor process has exited with {returncode}.')
 
         client = ConnectClient(
