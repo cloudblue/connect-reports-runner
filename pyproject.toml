@@ -35,7 +35,7 @@ cextrun = 'executor.runner:run_executor'
 python = "^3.8"
 chardet = "3.*"
 connect-openapi-client = ">=25.4"
-connect-reports-core = "24.*"
+connect-reports-core = "25.*"
 lxml = "4.*"
 openpyxl = "3.*"
 requests = "2.*"
