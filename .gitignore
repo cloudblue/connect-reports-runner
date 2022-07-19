@@ -131,4 +131,3 @@ dmypy.json
 .devcontainer
 
 .idea/
-poetry.lock
