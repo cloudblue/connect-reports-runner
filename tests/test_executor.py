@@ -133,6 +133,74 @@ def test_execute_report_v2(
     executor.executor.start()
 
 
+@pytest.mark.parametrize(
+    'entrypoint',
+    (
+        'entrypoint_v2_async',
+        'entrypoint_v2_async_gen',
+    ),
+)
+def test_execute_report_v2_async(
+    mocker,
+    mocked_env,
+    mocked_responses,
+    mocked_dir_v2,
+    report_v2_json,
+    mocked_report_response_v2_fake_fs,
+    entrypoint,
+):
+    root_path = os.getenv('REPORTS_MOUNTPOINT')
+    xlsx_renderer = RendererDefinition(
+        root_path=root_path,
+        id='xlsx_renderer',
+        type='xlsx',
+        description='Excel renderer.',
+        default=True,
+        template='super_report/template.xlsx',
+        args={
+            'start_row': 1,
+            'start_col': 1,
+        },
+    )
+    report_json = report_v2_json(
+        name='pending fulfillment requests',
+        readme_file='Readme.md',
+        entrypoint=f'super_report.{entrypoint}.generate',
+        renderers=[xlsx_renderer],
+    )
+    report_definition = ReportDefinition(
+        root_path=root_path,
+        **report_json,
+    )
+    mocker.patch(
+        'executor.executor.get_report_definition',
+        return_value=report_definition,
+    )
+
+    mocked_report_response_v2_fake_fs['renderer'] = 'xlsx_renderer'
+    mocked_report_response_v2_fake_fs['entrypoint'] = report_definition.entrypoint
+
+    mocked_responses.add(
+        method='GET',
+        url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000',
+        json=mocked_report_response_v2_fake_fs,
+    )
+    mocked_responses.add(
+        method='POST',
+        url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000/progress',
+        status=204,
+        json={},
+    )
+    mocked_responses.add(
+        method='POST',
+        url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000/upload',
+        status=204,
+        json={},
+    )
+
+    executor.executor.start()
+
+
 def test_execute_report_error_on_report_code_controlled(
     mocker,
     mocked_env,

@@ -84,8 +84,8 @@ def report_v1_json(param_json):
         name='Report',
         readme_file='Readme.md',
         entrypoint='module.entrypoint.generate',
-        audience=['vendor', 'provider'],  # noqa: B006
-        parameters=[param_json()],  # noqa: B006
+        audience=['vendor', 'provider'],  # noqa: B006 B008
+        parameters=[param_json()],  # noqa: B006 B008
         template='module/template.xlsx',
         start_row=1,
         start_col=1,
@@ -103,7 +103,6 @@ def report_v1_json(param_json):
             'start_col': start_col,
         }
         return data
-
     return _report_data
 
 
@@ -148,7 +147,7 @@ def report_v2_json(param_json):
         readme_file='Readme.md',
         entrypoint='module.entrypoint.generate',
         audience=['vendor', 'provider'],  # noqa: B006
-        parameters=[param_json()],  # noqa: B006
+        parameters=[param_json()],  # noqa: B006 B008
         renderers=[],  # noqa: B006
     ):
         data = {
