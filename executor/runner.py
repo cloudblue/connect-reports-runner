@@ -43,6 +43,7 @@ def run_executor():
         api_key=report_env['client_token'],
         max_retries=3,
         default_headers=get_user_agent(),
+        default_limit=250,
     )
     try:
         fail_report(
