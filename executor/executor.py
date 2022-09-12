@@ -40,7 +40,7 @@ def start():
         max_retries=5,
         default_limit=500,
         default_headers=get_user_agent(),
-        timeout=(360, 360),
+        timeout=(180, 1500),
     )
 
     try:
@@ -145,7 +145,7 @@ def execute_report(control_client, report_definition, connect_report):  # noqa: 
         max_retries=5,
         default_limit=500,
         default_headers=get_user_agent(),
-        timeout=(360, 360),
+        timeout=(180, 1500),
         resourceset_append=False,
     )
 
