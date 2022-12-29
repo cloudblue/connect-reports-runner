@@ -32,7 +32,7 @@ keywords = [
 cextrun = 'executor.runner:run_executor'
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.8,<4"
 chardet = "3.*"
 connect-openapi-client = ">=25.4"
 connect-reports-core = "26.*"
@@ -40,27 +40,23 @@ lxml = "4.*"
 openpyxl = "3.*"
 requests = "2.*"
 
-[tool.poetry.dev-dependencies]
-flake8 = "^5.0"
-flake8-broken-line = "0.*"
-flake8-bugbear = "^22"
-flake8-cognitive-complexity = "0.*"
-flake8-commas = "2.*"
-flake8-comprehensions = "3.*"
-flake8-debugger = "3.*"
-flake8-eradicate = "1.*"
-flake8-future-import = "0.*"
-flake8-import-order = "0.*"
-flake8-string-format = "0.*"
+[tool.poetry.group.test.dependencies]
+pytest = ">=6.1.2,<8"
+pytest-cov = ">=2.10.1,<5"
+pytest-mock = "^3.3.1"
+coverage = {extras = ["toml"], version = ">=5.3,<7"}
+flake8 = ">=3.8,<6"
+flake8-bugbear = ">=20,<23"
+flake8-cognitive-complexity = "^0.1"
+flake8-commas = "~2.1"
+flake8-future-import = "~0.4"
+flake8-broken-line = ">=0.3,<0.7"
+flake8-pyproject = "^1.2.2"
 ipdb = "0.*"
 ipython = "7.*"
 jsonschema = "3.*"
 pdbpp = "0.*"
 pyfakefs ="4.*"
-pytest = "6.*"
-pytest-cov = "2.*"
-pytest-deadfixtures = "2.*"
-pytest-mock = "3.*"
 pytest-randomly = "3.*"
 responses = "0.*"
 
@@ -93,31 +89,26 @@ exclude_lines = [
     "if __name__ == .__main__.:",
 ]
 
-
-[tool.flakehell]
-
+[tool.flake8]
 exclude = [
     ".idea",
-    ".vscode",
     ".git",
-    "postgres_data",
-    "*/migrations/*.py",
-    "*/settings/*.py",
-    "*/manage.py",
-    "*.eggs",
-    "*.egg",
-    "tests/",
-    "./docs/*.rst",
-    "demo.ipynb"
+    ".tox",
+    "dist",
+    "doc",
+    "*lib/python*",
+    "*egg",
+    "build",
+    ".svn",
+    "demo",
+    "env",
+    "venv*"
 ]
-show_source = true
-max_line_length = 120
-# application-import-names = "smarkets"
+show-source = true
+max-line-length = 100
+max-cognitive-complexity = 15
+ignore = ["FI1", "W503", "E800"]
 
-[tool.flakehell.plugins]
-pycodestyle = ["+*", "-W503"]
-pyflakes = ["+*"]
-pylint = ["-*"]
 
 [tool.isort]
 line_length = 100
