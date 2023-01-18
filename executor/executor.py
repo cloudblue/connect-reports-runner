@@ -60,7 +60,7 @@ def start():
 
     if result:  # pragma: no branch
         try:
-            upload_file(client, result, report_env["report_id"])
+            upload_file(client, result, report_env["report_id"], report_to_execute['owner']['id'])
         except (ClientError, Exception) as e:
             logger.exception('An error ocurred during report upload.')
             handle_post_execution_exception(e, client)

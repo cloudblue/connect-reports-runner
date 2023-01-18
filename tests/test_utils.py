@@ -101,6 +101,13 @@ def test_upload_file(mocked_responses, fs):
 
     mocked_responses.add(
         method='POST',
+        url='https://localhost/public/v1/media/folders/reports_report_file/VA-001/files',
+        status=201,
+        body=b'{"id": "MFL-001"}',
+    )
+
+    mocked_responses.add(
+        method='POST',
         url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000/upload',
         status=204,
         json={},
@@ -111,7 +118,7 @@ def test_upload_file(mocked_responses, fs):
         import pathlib
         zipfile = os.path.join(tmpdir, 'report.zip')
         pathlib.Path(zipfile).touch()
-        response = upload_file(client, zipfile, 'REC-000-000-0000-000000')
+        response = upload_file(client, zipfile, 'REC-000-000-0000-000000', 'VA-001')
 
     assert response is None
 
