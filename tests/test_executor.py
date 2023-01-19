@@ -65,6 +65,12 @@ def test_execute_report_v1(
     )
     mocked_responses.add(
         method='POST',
+        url='https://localhost/public/v1/media/folders/reports_report_file/VA-000-000/files',
+        status=201,
+        body=b'{"id": "MFL-001"}',
+    )
+    mocked_responses.add(
+        method='POST',
         url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000/upload',
         status=204,
         json={},
@@ -122,6 +128,12 @@ def test_execute_report_v2(
         url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000/progress',
         status=204,
         json={},
+    )
+    mocked_responses.add(
+        method='POST',
+        url='https://localhost/public/v1/media/folders/reports_report_file/VA-000-000/files',
+        status=201,
+        body=b'{"id": "MFL-001"}',
     )
     mocked_responses.add(
         method='POST',
@@ -190,6 +202,12 @@ def test_execute_report_v2_async(
         url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000/progress',
         status=204,
         json={},
+    )
+    mocked_responses.add(
+        method='POST',
+        url='https://localhost/public/v1/media/folders/reports_report_file/VA-000-000/files',
+        status=201,
+        body=b'{"id": "MFL-001"}',
     )
     mocked_responses.add(
         method='POST',
@@ -337,8 +355,9 @@ def test_execute_report_upload_error(
     )
     mocked_responses.add(
         method='POST',
-        url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000/upload',
+        url='https://localhost/public/v1/media/folders/reports_report_file/VA-000-000/files',
         status=500,
+        body=b'{"id": "MFL-001"}',
     )
 
     with pytest.raises(ClientError) as e:

@@ -109,13 +109,18 @@ def get_user_agent():
     }
 
 
-def upload_file(client, report_name, report_id):
+def upload_file(client, report_name, report_id, owner_id):
     report_filename = os.path.basename(report_name)
-    return client.ns('reporting').reports[report_id].action('upload').post(
+    reports_media_api = client.ns('media').ns('folders').collection('reports_report_file')
+    media_file = reports_media_api[owner_id].action('files').post(
         data=open(report_name, 'rb'),
         headers={
             'Content-Type': 'application/octet-stream',
             'Content-Disposition': f'attachment; filename="{report_filename}"',
-            **get_user_agent(),
         },
+    )
+
+    return client.ns('reporting').reports[report_id].action('upload').post(
+        data={'file': {'id': json.loads(media_file)['id']}},
+        headers=get_user_agent(),
     )
