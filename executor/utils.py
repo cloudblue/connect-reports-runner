@@ -121,6 +121,6 @@ def upload_file(client, report_name, report_id, owner_id):
     )
 
     return client.ns('reporting').reports[report_id].action('upload').post(
-        data={'file': {'id': json.loads(media_file)['id']}},
+        payload={'file': {'id': json.loads(media_file)['id']}},
         headers=get_user_agent(),
     )
