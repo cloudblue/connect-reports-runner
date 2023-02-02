@@ -4,9 +4,7 @@ import tempfile
 
 import pytest
 from connect.client import ConnectClient
-from pkg_resources import (
-    DistributionNotFound,
-)
+from pkg_resources import DistributionNotFound
 
 from executor.exceptions import RunnerException
 from executor.utils import (
@@ -112,8 +110,8 @@ def test_upload_file(mocked_responses, fs):
         status=204,
         json={},
     )
-    import tempfile
     import os
+    import tempfile
     with tempfile.TemporaryDirectory() as tmpdir:
         import pathlib
         zipfile = os.path.join(tmpdir, 'report.zip')
