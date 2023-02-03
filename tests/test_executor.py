@@ -5,10 +5,7 @@ from unittest.mock import MagicMock
 import pytest
 from connect.client import ClientError, ConnectClient
 from connect.reports.constants import DEFAULT_RENDERER_ID
-from connect.reports.datamodels import (
-    RendererDefinition,
-    ReportDefinition,
-)
+from connect.reports.datamodels import RendererDefinition, ReportDefinition
 
 import executor.executor
 

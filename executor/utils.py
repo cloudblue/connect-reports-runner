@@ -4,10 +4,7 @@ import platform
 from importlib import import_module
 
 from connect.reports.parser import parse
-from connect.reports.validator import (
-    validate,
-    validate_with_schema,
-)
+from connect.reports.validator import validate, validate_with_schema
 from pkg_resources import DistributionNotFound, get_distribution
 
 from executor.exceptions import RunnerException
