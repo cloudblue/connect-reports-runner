@@ -51,6 +51,7 @@ def run_executor():
             'Report execution has failed due contains too much data, please try to exclude '
             'using report parameters some of it and try again.',
             False,
+            stdout,
         )
         logger.info(f'Report {report_id} has been failed successfully.')
     except ClientError as ce:
