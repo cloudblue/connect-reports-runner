@@ -1,3 +1,4 @@
+import traceback
 from http import HTTPStatus
 
 from connect.client import ClientError
@@ -109,10 +110,11 @@ def handle_post_execution_exception(e: Exception, client):
     raise e
 
 
-def fail_report(client, report_id, reason, block):
+def fail_report(client, report_id, reason, block, failure_stdout=None):
     return client.ns('reporting').reports[report_id].action('fail').post(
         {
             "notes": reason,
             "block": block,
+            "traceback": failure_stdout or traceback.format_exc(),
         },
     )

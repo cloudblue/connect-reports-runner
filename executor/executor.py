@@ -49,7 +49,7 @@ def start():
         report_definition = get_report_definition(report_to_execute['template']['entrypoint'])
 
     except (ClientError, Exception) as e:
-        logger.exception('An error ocurred while preparing the execution environment.')
+        logger.exception('An error occurred while preparing the execution environment.')
         handle_preparation_exception(e, client)
 
     result = execute_report(
@@ -62,7 +62,7 @@ def start():
         try:
             upload_file(client, result, report_env["report_id"], report_to_execute['owner']['id'])
         except (ClientError, Exception) as e:
-            logger.exception('An error ocurred during report upload.')
+            logger.exception('An error occurred during report upload.')
             handle_post_execution_exception(e, client)
 
 
@@ -129,7 +129,7 @@ def execute_report(control_client, report_definition, connect_report):  # noqa: 
     try:
         report_entry_point = get_report_entrypoint(report_definition.entrypoint)
     except (ImportError, AttributeError) as e:
-        logger.exception('An error ocurred while importing report entrypoint.')
+        logger.exception('An error occurred while importing report entrypoint.')
         handle_preparation_exception(e, control_client)
 
     is_async = (
