@@ -108,12 +108,13 @@ def get_user_agent():
 
 def upload_file(client, report_name, report_id, owner_id):
     report_filename = os.path.basename(report_name)
+    _, report_extension = report_filename.rsplit('.', 1)
     reports_media_api = client.ns('media').ns('folders').collection('reports_report_file')
     media_file = reports_media_api[owner_id].action('files').post(
         data=open(report_name, 'rb'),
         headers={
             'Content-Type': 'application/octet-stream',
-            'Content-Disposition': f'attachment; filename="{report_filename}"',
+            'Content-Disposition': f'attachment; filename="{report_id}.{report_extension}"',
         },
     )
 

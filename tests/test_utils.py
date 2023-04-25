@@ -5,6 +5,7 @@ import tempfile
 import pytest
 from connect.client import ConnectClient
 from pkg_resources import DistributionNotFound
+from responses import matchers
 
 from executor.exceptions import RunnerException
 from executor.utils import (
@@ -102,6 +103,10 @@ def test_upload_file(mocked_responses, fs):
         url='https://localhost/public/v1/media/folders/reports_report_file/VA-001/files',
         status=201,
         body=b'{"id": "MFL-001"}',
+        match=[matchers.header_matcher({
+            'Content-Type': 'application/octet-stream',
+            'Content-Disposition': 'attachment; filename="REC-000-000-0000-000000.zip"',
+        })],
     )
 
     mocked_responses.add(
