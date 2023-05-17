@@ -7,7 +7,10 @@ from executor.runner import run_executor
 
 def test_runner_exit_ok(mocker, mocked_env, caplog):
     communicate_mock = mocker.MagicMock(
-        return_value=('stdout', 'stderr'),
+        return_value=(
+            bytes('stdout', 'utf-8'),
+            bytes('some stack trace', 'utf-8'),
+        ),
     )
     mocker.patch(
         'executor.runner.subprocess.Popen',
@@ -25,7 +28,10 @@ def test_runner_exit_ok(mocker, mocked_env, caplog):
 
 def test_runner_exit_ko_fail_ok(mocker, mocked_env, caplog):
     communicate_mock = mocker.MagicMock(
-        return_value=('stdout', 'stderr'),
+        return_value=(
+            bytes('stdout', 'utf-8'),
+            bytes('some stack trace', 'utf-8'),
+        ),
     )
     mocker.patch(
         'executor.runner.subprocess.Popen',
@@ -41,15 +47,19 @@ def test_runner_exit_ko_fail_ok(mocker, mocked_env, caplog):
         run_executor()
 
     assert caplog.records[1].message == (
-        "Executor process has exited with 127: stdout='stdout' stderr='stderr'."
+        "Executor process has exited with 127: stdout=b'stdout' stderr=b'some stack trace'."
     )
     assert caplog.records[2].message.endswith('has been failed successfully.')
     fail_mock.assert_called_once()
+    assert fail_mock.call_args[0][4] == 'stdout: stdout stderr: some stack trace'
 
 
 def test_runner_exit_ko_fail_fail(mocker, mocked_env, caplog):
     communicate_mock = mocker.MagicMock(
-        return_value=('stdout', 'stderr'),
+        return_value=(
+            bytes('stdout', 'utf-8'),
+            bytes('stderr', 'utf-8'),
+        ),
     )
     mocker.patch(
         'executor.runner.subprocess.Popen',
@@ -65,7 +75,7 @@ def test_runner_exit_ko_fail_fail(mocker, mocked_env, caplog):
         run_executor()
 
     assert caplog.records[1].message == (
-        "Executor process has exited with 127: stdout='stdout' stderr='stderr'."
+        "Executor process has exited with 127: stdout=b'stdout' stderr=b'stderr'."
     )
     assert caplog.records[2].message.endswith(' to fail status: test error')
     fail_mock.assert_called_once()
