@@ -64,7 +64,7 @@ def test_handle_preparation_exception_getting_report(
 
 
 @pytest.mark.parametrize("ex_type", [ValueError, AttributeError, ImportError, ModuleNotFoundError])
-def test_handle_report_execution_value_error(
+def test_handle_report_execution_different_errors(
     mocker,
     mocked_env,
     mocked_responses,
@@ -95,6 +95,41 @@ def test_handle_report_execution_value_error(
         'REC-000-000-0000-000000',
         'Report execution failed with error: Some Value Error',
         True,
+    )
+
+
+def test_handle_report_execution_row_limit_errors(
+    mocker,
+    mocked_env,
+    mocked_responses,
+    mocked_report_response_v1,
+):
+    client = ConnectClient(
+        use_specs=False,
+        api_key=os.getenv('CLIENT_TOKEN'),
+        endpoint=os.getenv('API_ENDPOINT'),
+    )
+    mocked_responses.add(
+        method='GET',
+        url='https://localhost/public/v1/reporting/reports/REC-000-000-0000-000000',
+        json=mocked_report_response_v1,
+    )
+    exception = ValueError(
+        'Row numbers must be between 1 and 1048576. Row number supplied was 1048577',
+    )
+
+    upload = mocker.patch(
+        'executor.exception_handler.fail_report',
+    )
+    with pytest.raises(ValueError):
+        handle_exception(exception, client)
+
+    upload.assert_called_with(
+        client,
+        'REC-000-000-0000-000000',
+        'Report execution failed with error: Row numbers must be between '
+        '1 and 1048576. Row number supplied was 1048577',
+        False,
     )
 
 
