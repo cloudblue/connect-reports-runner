@@ -43,6 +43,8 @@ def get_reason(e: Exception, report_type):
 def report_to_be_blocked(e: Exception, report_type):
     if isinstance(e, RuntimeError):
         return False
+    if isinstance(e, ValueError) and 'Row numbers must be between 1 and 1048576' in str(e):
+        return False
     return True if report_type == 'custom' else False
 
 
