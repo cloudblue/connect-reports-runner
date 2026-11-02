@@ -15,8 +15,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Utilities",
@@ -33,7 +31,7 @@ keywords = [
 cextrun = 'executor.runner:run_executor'
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4"
+python = ">=3.10,<4"
 chardet = "3.*"
 connect-openapi-client = ">=25.4"
 connect-reports-core = "26.*"
