@@ -1,10 +1,10 @@
 import json
 import os
 import tempfile
+from importlib.metadata import PackageNotFoundError
 
 import pytest
 from connect.client import ConnectClient
-from pkg_resources import DistributionNotFound
 from responses import matchers
 
 from executor.exceptions import RunnerException
@@ -192,20 +192,12 @@ def test_get_report_entrypoint():
 
 
 def test_get_version(mocker):
-    mocked = mocker.MagicMock()
-    mocked.version = '22.0'
-    mocker.patch(
-        'executor.utils.get_distribution',
-        return_value=mocked,
-    )
+    mocker.patch('executor.utils.get_package_version', return_value='22.0')
     assert get_version() == '22.0'
 
 
 def test_get_version_exception(mocker):
-    mocker.patch(
-        'executor.utils.get_distribution',
-        side_effect=DistributionNotFound(),
-    )
+    mocker.patch('executor.utils.get_package_version', side_effect=PackageNotFoundError())
     assert get_version() == '0.0.0'
 
 

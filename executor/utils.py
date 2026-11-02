@@ -2,10 +2,10 @@ import json
 import os
 import platform
 from importlib import import_module
+from importlib.metadata import PackageNotFoundError, version as get_package_version
 
 from connect.reports.parser import parse
 from connect.reports.validator import validate, validate_with_schema
-from pkg_resources import DistributionNotFound, get_distribution
 
 from executor.exceptions import RunnerException
 
@@ -87,8 +87,8 @@ def get_report_definition(entrypoint):
 
 def get_version():
     try:
-        return get_distribution('connect-reports-runner').version
-    except DistributionNotFound:
+        return get_package_version('connect-reports-runner')
+    except PackageNotFoundError:
         return '0.0.0'
 
 

@@ -15,8 +15,6 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Operating System :: OS Independent",
     "Intended Audience :: Developers",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Topic :: Utilities",
@@ -33,7 +31,7 @@ keywords = [
 cextrun = 'executor.runner:run_executor'
 
 [tool.poetry.dependencies]
-python = ">=3.8,<4"
+python = ">=3.10,<4"
 chardet = "3.*"
 connect-openapi-client = ">=25.4"
 connect-reports-core = "26.*"
@@ -55,7 +53,7 @@ flake8-future-import = "~0.4"
 flake8-broken-line = ">=0.3,<0.7"
 flake8-pyproject = "^1.2.2"
 ipdb = "0.*"
-ipython = "7.*"
+ipython = "^8.10.0"
 jsonschema = "3.*"
 pdbpp = "0.*"
 pyfakefs ="4.*"
