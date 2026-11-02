@@ -1,7 +1,7 @@
 import json
 import os
 import sys
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 import responses
@@ -165,9 +165,8 @@ def report_v2_json(param_json):
 
 
 @pytest.fixture(scope='session', autouse=True)
-def patch_get_distribution():
-    mocker_distro = MagicMock(version='1.0.0')
-    with patch('pkg_resources.get_distribution', return_value=mocker_distro):
+def patch_get_package_version():
+    with patch('executor.utils.get_package_version', return_value='1.0.0'):
         yield
 
 
