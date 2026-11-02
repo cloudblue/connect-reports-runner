@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.12-slim
 ENV PYTHONUNBUFFERED 1
 
 ARG RUNNER_VERSION
@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y \
     libcairo2 \
     libpango-1.0-0 \
     libpangocairo-1.0-0 \
-    libgdk-pixbuf2.0-0 \
+    libgdk-pixbuf-2.0-0 \
     libffi-dev \
     shared-mime-info \
     git
@@ -25,7 +25,8 @@ WORKDIR /app
 
 RUN poetry build
 
-RUN pip install dist/*.whl
+# WeasyPrint 53, which connect-reports-core 26 needs, cannot render PDFs with pydyf 0.12 or newer
+RUN pip install dist/*.whl "pydyf<0.12"
 
 RUN rm -rf dist
 
